@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t.not_found.kicker }} — awtik{% endblock %}
+{% block robots %}<meta name="robots" content="noindex, follow">{% endblock %}
+
+{% block content %}
+<section class="not-found" data-header="light">
+  <div class="container not-found__inner">
+    <span class="mono-label">{{ t.not_found.kicker }}</span>
+    <h1>{{ t.not_found.title }}</h1>
+    <p>{{ t.not_found.text }}</p>
+    <a class="btn btn--solid" href="{{ home_path }}"><span>{{ t.not_found.back }}</span><span class="btn__arrow" aria-hidden="true">↗</span></a>
+  </div>
+</section>
+{% endblock %}

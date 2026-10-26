@@ -1,0 +1,393 @@
+{% macro case_art(case) -%}
+<div class="case-art case-art--{{ case.slug }}" aria-hidden="true">
+  {% if case.slug == 'cloth-drop' %}
+  <div class="mock mock--cloth">
+    <div class="mock__chrome">
+      <span class="mock__dots"><i></i><i></i><i></i></span>
+      <span>cloth-drop / admin</span>
+      <span class="mock__live">LIVE</span>
+    </div>
+    <div class="mock__body">
+      <div class="mock__head">
+        <div><span class="mock__eyebrow">LOT 014 / DROP</span><strong>ARCHIVE JACKET</strong></div>
+        <span class="mock__timer">14:59</span>
+      </div>
+      <div class="mock__list">
+        <div class="mock__item"><span><i class="mock__dot"></i>UNIT 001</span><span class="mock__pill">reserved</span></div>
+        <div class="mock__item"><span><i class="mock__dot"></i>UNIT 002</span><span class="mock__pill">reserved</span></div>
+        <div class="mock__item"><span><i class="mock__dot mock__dot--empty"></i>UNIT 003</span><span class="mock__pill mock__pill--ghost">available</span></div>
+        <div class="mock__item"><span><i class="mock__dot mock__dot--empty"></i>UNIT 004</span><span class="mock__pill mock__pill--ghost">available</span></div>
+      </div>
+      <div class="mock__foot"><span>12 UNITS</span><span>7 RESERVED</span><span>WAITLIST 24</span></div>
+    </div>
+  </div>
+  {% elif case.slug == 'awtik-cash' %}
+  <div class="mock mock--cash">
+    <div class="mock__chrome">
+      <span class="mock__dots"><i></i><i></i><i></i></span>
+      <span>cash / dashboard</span>
+      <span>2026</span>
+    </div>
+    <div class="mock__body">
+      <div class="mock__balance">
+        <span class="mock__eyebrow">TOTAL BALANCE</span>
+        <strong>61 412 ₽</strong>
+        <span class="mock__delta">+12.4%</span>
+      </div>
+      <div class="mock__chart">
+        <i style="--h: 28%"></i><i style="--h: 48%"></i><i style="--h: 37%"></i><i style="--h: 62%"></i>
+        <i style="--h: 45%"></i><i style="--h: 82%"></i><i style="--h: 58%"></i><i style="--h: 74%"></i>
+      </div>
+      <div class="mock__tx">
+        <div><span>SALARY</span><span>+ 20 000</span></div>
+        <div><span>RENT</span><span>− 18 000</span></div>
+        <div><span>COFFEE</span><span>− 420</span></div>
+      </div>
+    </div>
+  </div>
+  {% elif case.slug == 'valentinas-bakery' %}
+  <div class="mock mock--bakery">
+    <div class="mock__chrome">
+      <span class="mock__dots"><i></i><i></i><i></i></span>
+      <span>valentina / storefront</span>
+      <span>CART 02</span>
+    </div>
+    <div class="mock__body">
+      <div class="mock__store-head"><strong>VALENTINA'S</strong><span>BAKERY / 2026</span></div>
+      <div class="mock__products">
+        <div class="mock__product"><span class="mock__shape mock__shape--round"></span><span>BRIOCHE</span><b>320 ₽</b></div>
+        <div class="mock__product"><span class="mock__shape mock__shape--square"></span><span>TART</span><b>480 ₽</b></div>
+        <div class="mock__product"><span class="mock__shape mock__shape--oval"></span><span>ÉCLAIR</span><b>260 ₽</b></div>
+        <div class="mock__product"><span class="mock__shape mock__shape--line"></span><span>SET</span><b>1 200 ₽</b></div>
+      </div>
+      <div class="mock__toast">
+        <span class="mock__toast-dot"></span>
+        <div><b>NEW ORDER</b><span>#1042 · 2 400 ₽</span></div>
+        <span class="mock__toast-arrow">↗</span>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+</div>
+{%- endmacro %}
+
+{% macro section_head(label, title, lead) -%}
+<div class="section-head" data-reveal>
+  <div class="section-head__meta">
+    <span class="mono-label">{{ label }}</span>
+    <span class="section-head__rule" aria-hidden="true"></span>
+  </div>
+  <div class="section-head__main">
+    <h2>{{ title }}</h2>
+    <p>{{ lead }}</p>
+  </div>
+</div>
+{%- endmacro %}
+
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero" id="hero" data-header="dark">
+  <div class="container hero__inner">
+    <div class="hero__top">
+      <span class="status"><i class="status__dot" aria-hidden="true"></i>{{ t.hero.status }}</span>
+      <span class="hero__top-year">PORTFOLIO / {{ year }}</span>
+    </div>
+
+    <div class="hero__main">
+      <div class="hero__copy">
+        <p class="hero__eyebrow"><span class="hero__eyebrow-line" aria-hidden="true"></span>{{ t.hero.kicker }}</p>
+        <h1 class="hero__title">
+          {% for line in t.hero.title %}
+          <span class="hero__line{% if loop.last %} hero__line--accent{% endif %}"><span>{{ line }}</span></span>
+          {% endfor %}
+        </h1>
+        <div class="hero__bottom">
+          <p class="hero__lead">{{ t.hero.lead }}</p>
+          <div class="hero__actions">
+            <a class="btn btn--solid" href="#contact"><span>{{ t.hero.cta_primary }}</span><span class="btn__arrow" aria-hidden="true">↗</span></a>
+            <a class="text-link" href="#work"><span>{{ t.hero.cta_secondary }}</span><span class="text-link__arrow" aria-hidden="true">↓</span></a>
+          </div>
+        </div>
+      </div>
+
+      <aside class="hero__aside">
+        <div class="terminal" aria-hidden="true">
+          <div class="terminal__bar">
+            <span class="terminal__dots"><i></i><i></i><i></i></span>
+            <span>{{ t.hero.terminal_title }}</span>
+            <span>bash</span>
+          </div>
+          <div class="terminal__body">
+            <p class="terminal__cmd">{{ t.hero.terminal_command }}</p>
+            {% for line in t.hero.terminal_lines %}
+            <p class="terminal__line"><span class="terminal__check" aria-hidden="true">✓</span>{{ line }}</p>
+            {% endfor %}
+          </div>
+        </div>
+        <dl class="hero__meta">
+          {% for item in t.hero.meta %}
+          <div><dt>{{ item.label }}</dt><dd>{{ item.value }}</dd></div>
+          {% endfor %}
+        </dl>
+      </aside>
+    </div>
+
+    <div class="hero__foot">
+      <a class="scroll-cue" href="#services"><span class="scroll-cue__line" aria-hidden="true"></span><span>{{ t.hero.scroll }}</span></a>
+      <div class="hero__foot-meta">{% for item in t.hero.foot_meta %}<span>{{ item }}</span>{% endfor %}</div>
+    </div>
+  </div>
+</section>
+
+<div class="ticker" aria-hidden="true">
+  <div class="ticker__track">
+    {% for _ in range(6) %}
+    <div class="ticker__group">{% for item in t.ticker %}<span>{{ item }}</span><i>✳</i>{% endfor %}</div>
+    {% endfor %}
+  </div>
+</div>
+
+<section class="section section--paper services" id="services" data-header="light">
+  <div class="container">
+    {{ section_head(t.services.label, t.services.title, t.services.lead) }}
+    <div class="services__list">
+      {% for item in t.services.entries %}
+      <article class="service" data-reveal style="--delay: {{ loop.index0 * 0.06 }}s">
+        <span class="service__num">{{ item.num }}</span>
+        <div class="service__body">
+          <h3>{{ item.title }}</h3>
+          <p>{{ item.desc }}</p>
+        </div>
+        <ul class="service__tags" aria-label="{{ t.services.stack_label }}">
+          {% for tag in item.tags %}<li>{{ tag }}</li>{% endfor %}
+        </ul>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section section--ink work" id="work" data-header="dark">
+  <div class="container">
+    {{ section_head(t.work.label, t.work.title, t.work.lead) }}
+    <div class="work__layout">
+      <div class="work__list">
+        {% for case in t.work.cases %}
+        <article class="work-row{% if loop.first %} is-active{% endif %}" data-case="{{ case.slug }}" tabindex="0" role="button" aria-haspopup="dialog" aria-controls="case-{{ case.slug }}" aria-label="{{ case.title }} — {{ t.work.open }}" data-reveal style="--delay: {{ loop.index0 * 0.07 }}s">
+          <span class="work-row__num">{{ case.num }}</span>
+          <div class="work-row__main">
+            <h3>{{ case.title }}</h3>
+            <p>{{ case.subtitle }}</p>
+            <span class="work-row__open-mobile">{{ t.work.open }} <i aria-hidden="true">↗</i></span>
+          </div>
+          <ul class="work-row__tags">
+            {% for tag in case.tags %}<li>{{ tag }}</li>{% endfor %}
+          </ul>
+          <div class="work-row__meta">
+            <span>{{ case.year }}</span>
+            <span class="work-row__open">{{ t.work.open }} <i aria-hidden="true">↗</i></span>
+          </div>
+          <div class="work-row__mobile-art">{{ case_art(case) }}</div>
+        </article>
+        {% endfor %}
+      </div>
+
+      <aside class="work__preview" aria-hidden="true">
+        <div class="work__preview-inner">
+          <div class="work__preview-head"><span>{{ t.work.preview_label }}</span><span>{{ t.work.year }} / {{ year }}</span></div>
+          <div class="work__previews">
+            {% for case in t.work.cases %}
+            <div class="work__preview-item{% if loop.first %} is-active{% endif %}" data-preview="{{ case.slug }}">{{ case_art(case) }}</div>
+            {% endfor %}
+          </div>
+        </div>
+      </aside>
+    </div>
+    <div class="work__cta" data-reveal>
+      <p>{{ t.work.cta_text }}</p>
+      <a class="btn btn--solid" href="#contact"><span>{{ t.work.cta }}</span><span class="btn__arrow" aria-hidden="true">↗</span></a>
+    </div>
+  </div>
+</section>
+
+<section class="section section--paper process" id="process" data-header="light">
+  <div class="container process__layout">
+    <div class="process__sticky">
+      <div class="process__sticky-inner">
+        <span class="mono-label">{{ t.process.label }}</span>
+        <h2 data-reveal>{{ t.process.title }}</h2>
+        <p data-reveal>{{ t.process.lead }}</p>
+        <div class="process__note" data-reveal><span>↳</span>{{ t.process.note }}</div>
+        <ul class="process__guarantees" data-reveal>
+          {% for item in t.process.guarantees %}<li>{{ item }}</li>{% endfor %}
+        </ul>
+      </div>
+    </div>
+    <div class="process__steps">
+      {% for step in t.process.steps %}
+      <article class="step" data-reveal style="--delay: {{ loop.index0 * 0.06 }}s">
+        <span class="step__num">{{ step.num }}</span>
+        <div class="step__body">
+          <div class="step__head"><h3>{{ step.title }}</h3><span>{{ step.meta }}</span></div>
+          <p>{{ step.desc }}</p>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section section--ink approach" id="stack" data-header="dark">
+  <div class="container">
+    {{ section_head(t.stack.label, t.stack.title, t.stack.lead) }}
+    <div class="approach__grid">
+      {% for item in t.stack.benefits %}
+      <article class="approach-card" data-reveal style="--delay: {{ loop.index0 * 0.06 }}s">
+        <span class="approach-card__num">{{ item.num }}</span>
+        <h3>{{ item.title }}</h3>
+        <p>{{ item.desc }}</p>
+      </article>
+      {% endfor %}
+    </div>
+    <details class="tech-details" data-reveal>
+      <summary><span>{{ t.stack.tech_label }}</span><i aria-hidden="true"></i></summary>
+      <div class="stack__grid">
+        {% for group in t.stack.groups %}
+        <div class="stack-group">
+          <span class="mono-label">{{ group.name }}</span>
+          <ul>{% for item in group.tools %}<li>{{ item }}</li>{% endfor %}</ul>
+        </div>
+        {% endfor %}
+      </div>
+    </details>
+  </div>
+</section>
+
+<section class="section section--paper about" id="about" data-header="light">
+  <div class="container about__layout">
+    <aside class="about__aside">
+      <div class="about__aside-inner">
+        <span class="mono-label">{{ t.about.label }}</span>
+        <div class="about__facts">
+          {% for fact in t.about.facts %}
+          <div><strong>{{ fact.value }}</strong><span>{{ fact.label }}</span></div>
+          {% endfor %}
+        </div>
+        <p class="about__signature">{{ t.about.signature }}</p>
+      </div>
+    </aside>
+    <div class="about__copy">
+      <h2 data-reveal>{{ t.about.title }}</h2>
+      <p class="about__quote" data-reveal>“{{ t.about.quote }}”</p>
+      {% for paragraph in t.about.paragraphs %}
+      <p class="about__text" data-reveal>{{ paragraph }}</p>
+      {% endfor %}
+      <div class="about__archive" data-reveal>
+        <span class="mono-label">{{ t.about.archive_label }}</span>
+        <p>{{ t.about.archive }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--ink faq" id="faq" data-header="dark">
+  <div class="container faq__layout">
+    <div class="faq__head">
+      <div class="faq__head-inner">
+        <span class="mono-label">{{ t.faq.label }}</span>
+        <h2 data-reveal>{{ t.faq.title }}</h2>
+      </div>
+    </div>
+    <div class="faq__list" data-reveal>
+      {% for item in t.faq.entries %}
+      <details class="faq-item">
+        <summary><span>{{ item.q }}</span><i aria-hidden="true"></i></summary>
+        <div class="faq-item__body"><p>{{ item.a }}</p></div>
+      </details>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section section--paper contact" id="contact" data-header="light">
+  <div class="container">
+    <div class="contact__grid">
+      <div class="contact__copy">
+        <div class="contact__copy-inner">
+          <span class="mono-label">{{ t.contact.label }}</span>
+          <h2 data-reveal>{{ t.contact.title }}</h2>
+          <p class="contact__lead" data-reveal>{{ t.contact.lead }}</p>
+          <div class="contact__status" data-reveal><span class="status"><i class="status__dot" aria-hidden="true"></i>{{ t.contact.availability }}</span></div>
+
+          <div class="contact__direct" data-reveal>
+            <span class="mono-label">{{ t.contact.direct_label }}</span>
+            <a href="{{ telegram_url }}" target="_blank" rel="noopener"><span>{{ t.contact.telegram }}</span><span>@{{ telegram }} ↗</span></a>
+            <a href="mailto:{{ email }}"><span>{{ t.contact.email }}</span><span>{{ email }} ↗</span></a>
+            <a href="{{ github }}" target="_blank" rel="noopener"><span>{{ t.contact.github }}</span><span>awt1k-dev ↗</span></a>
+          </div>
+
+          <div class="contact__next" data-reveal>
+            <span class="mono-label">{{ t.contact.next.label }}</span>
+            <ol>
+              {% for step in t.contact.next.steps %}<li>{{ step }}</li>{% endfor %}
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact__card" data-reveal>
+        <span class="mono-label">{{ t.contact.card.label }}</span>
+        <h3>{{ t.contact.card.title }}</h3>
+        <p class="contact__card-text">{{ t.contact.card.text }}</p>
+        <a class="btn btn--solid contact__card-btn" href="{{ telegram_url }}" target="_blank" rel="noopener">
+          <span>{{ t.contact.card.button }}</span>
+          <span class="btn__arrow" aria-hidden="true">↗</span>
+        </a>
+        <p class="contact__card-note">{{ t.contact.card.note }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block dialogs %}
+{% for case in t.work.cases %}
+<dialog class="case-dialog" id="case-{{ case.slug }}" aria-labelledby="case-title-{{ case.slug }}">
+  <div class="case-dialog__panel">
+    <div class="case-dialog__bar">
+      <span>{{ case.num }} / {{ case.year }}</span>
+      <button class="case-dialog__close" type="button" data-close-dialog aria-label="{{ t.work.close }}">
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <div class="case-dialog__scroll">
+      <span class="mono-label">{{ case.status }}</span>
+      <h2 id="case-title-{{ case.slug }}">{{ case.title }}</h2>
+      <p class="case-dialog__sub">{{ case.subtitle }}</p>
+      <p class="case-dialog__summary">{{ case.summary }}</p>
+      <div class="case-dialog__facts">
+        {% for fact in case.facts %}<div><span>{{ fact.label }}</span><strong>{{ fact.value }}</strong></div>{% endfor %}
+      </div>
+      <div class="case-dialog__art">{{ case_art(case) }}</div>
+      <div class="case-dialog__text">
+        <h3>{{ t.work.challenge }}</h3>
+        <p>{{ case.challenge }}</p>
+        <h3>{{ t.work.solution }}</h3>
+        <ul>{% for point in case.solution %}<li>{{ point }}</li>{% endfor %}</ul>
+        <h3>{{ t.work.result }}</h3>
+        <p>{{ case.result }}</p>
+        <h3>{{ t.work.stack }}</h3>
+        <ul class="tag-list">{% for tag in case.stack %}<li>{{ tag }}</li>{% endfor %}</ul>
+        {% if case.link %}
+        <a class="btn case-dialog__link" href="{{ case.link }}" target="_blank" rel="noopener"><span>{{ case.link_label }}</span><span class="btn__arrow" aria-hidden="true">↗</span></a>
+        {% else %}
+        <span class="btn btn--disabled case-dialog__link">{{ case.link_label }}</span>
+        {% endif %}
+        <a class="btn btn--solid case-dialog__cta" href="#contact" data-case-cta data-case-title="{{ case.title }}"><span>{{ t.work.case_cta }}</span><span class="btn__arrow" aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+  </div>
+</dialog>
+{% endfor %}
+{% endblock %}

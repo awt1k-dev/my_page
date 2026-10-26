@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t.privacy.title }} — awtik{% endblock %}
+{% block description %}{{ t.meta.description }}{% endblock %}
+
+{% block content %}
+<section class="legal" data-header="light">
+  <div class="container legal__inner">
+    <a class="text-link legal__back" href="{{ home_path }}"><span aria-hidden="true">←</span><span>{{ t.privacy.back }}</span></a>
+    <span class="mono-label">{{ t.privacy.updated }}</span>
+    <h1>{{ t.privacy.title }}</h1>
+    <div class="legal__body">
+      {% for section in t.privacy.sections %}
+      <article>
+        <h2>{{ section.title }}</h2>
+        {% for paragraph in section.paragraphs %}<p>{{ paragraph }}</p>{% endfor %}
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

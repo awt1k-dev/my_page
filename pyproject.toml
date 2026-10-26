@@ -1,0 +1,42 @@
+[project]
+name = "awtik-landing"
+version = "0.1.0"
+description = "Monochrome one-page portfolio for awtik"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.115,<1",
+    "jinja2>=3.1,<4",
+    "pydantic-settings>=2.6,<3",
+    "uvicorn[standard]>=0.30,<1",
+]
+
+[dependency-groups]
+dev = [
+    "httpx>=0.28,<1",
+    "mypy>=1.13,<2",
+    "pytest>=8.3,<9",
+    "ruff>=0.8,<1",
+]
+
+[tool.uv]
+package = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.ruff.lint.per-file-ignores]
+"app/i18n.py" = ["E501"]
+
+[tool.mypy]
+python_version = "3.12"
+plugins = ["pydantic.mypy"]
+ignore_missing_imports = true
