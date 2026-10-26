@@ -16,7 +16,20 @@ set -euo pipefail
 REPO="${REPO:-awt1k-dev/my_page}"
 BRANCH="${BRANCH:-main}"
 APP_DIR="${APP_DIR:-$HOME/awtik_landing}"
-TARBALL="${TARBALL:-https://github.com/$REPO/archive/refs/heads/$BRANCH.tar.gz}"
+
+# GitHub caches branch tarballs for a short while, so resolve the current
+# commit SHA first and download that exact archive. Falls back to the branch
+# archive if the API is unavailable.
+TARBALL="${TARBALL:-}"
+if [ -z "$TARBALL" ]; then
+	sha="$(curl -fsSL "https://api.github.com/repos/$REPO/commits/$BRANCH" 2>/dev/null \
+		| grep -m1 -o '"sha": *"[0-9a-f]\{40\}"' | cut -d'"' -f4 || true)"
+	if [ -n "$sha" ]; then
+		TARBALL="https://codeload.github.com/$REPO/tar.gz/$sha"
+	else
+		TARBALL="https://github.com/$REPO/archive/refs/heads/$BRANCH.tar.gz"
+	fi
+fi
 
 COMPOSE=(docker compose -f docker-compose.yml -f deploy/docker-compose.prod.yml)
 
@@ -67,7 +80,12 @@ host_port="${host_port:-8000}"
 echo "==> Waiting for the app on 127.0.0.1:$host_port"
 for _ in $(seq 1 30); do
 	if curl -fsS "http://127.0.0.1:$host_port/healthz" >/dev/null 2>&1; then
-		echo "==> OK: https://awtik.ru/"
+		echo "==> App is healthy on 127.0.0.1:$host_port"
+		if curl -fsS --resolve "awtik.ru:443:127.0.0.1" https://awtik.ru/healthz >/dev/null 2>&1; then
+			echo "==> OK: https://awtik.ru/"
+		else
+			echo "==> WARNING: TLS is not ready yet; check the caddy logs" >&2
+		fi
 		exit 0
 	fi
 	sleep 2
