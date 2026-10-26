@@ -1,0 +1,24 @@
+# Caddy config for awtik.ru, used by deploy/docker-compose.prod.yml.
+# Caddy obtains and renews the Let's Encrypt certificate automatically,
+# redirects HTTP to HTTPS and sets X-Forwarded-For for the app (so keep
+# TRUST_PROXY_HEADERS=true in .env).
+#
+# While testing DNS/firewall it can help to use the staging CA first:
+#   {
+#       acme_ca https://acme-staging-v02.api.letsencrypt.org/directory
+#   }
+
+www.awtik.ru {
+	redir https://awtik.ru{uri} permanent
+}
+
+awtik.ru {
+	encode zstd gzip
+
+	# The site has no forms or uploads.
+	request_body {
+		max_size 16KB
+	}
+
+	reverse_proxy web:8000
+}

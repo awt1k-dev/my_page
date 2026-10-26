@@ -3,6 +3,8 @@ services:
     build: .
     env_file:
       - .env
+    # Loopback only: the app must be reached through the reverse proxy, which
+    # is the only component that is allowed to set X-Forwarded-For.
     ports:
-      - "${PORT:-8000}:8000"
+      - "127.0.0.1:${PORT:-8000}:8000"
     restart: unless-stopped

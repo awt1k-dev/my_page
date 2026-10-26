@@ -16,6 +16,7 @@ uv run pytest
 uv run ruff check .
 uv run mypy app
 PORT=8001 docker compose up --build
+docker compose -f docker-compose.yml -f deploy/docker-compose.prod.yml up -d --build  # prod: app + Caddy
 ```
 
 Port **8000** is usually occupied by `cloth_site-api` on this machine. Use `8001` locally, or stop that container before mapping 8000.

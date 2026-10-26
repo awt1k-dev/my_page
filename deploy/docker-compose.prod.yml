@@ -1,0 +1,40 @@
+# Production override: run Caddy in front of the app.
+#
+#   docker compose -f docker-compose.yml -f deploy/docker-compose.prod.yml up -d --build
+#
+# The app itself stays bound to 127.0.0.1 (see docker-compose.yml) and is only
+# reachable through Caddy, which is the single component allowed to set
+# X-Forwarded-For. Certificates are kept in the caddy_data volume, so they
+# survive `docker compose down` and redeploys.
+
+services:
+  web:
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      web:
+        condition: service_healthy
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  caddy_data:
+  caddy_config:

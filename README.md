@@ -57,14 +57,24 @@ tests/             page, security, rate-limit tests
 
 ## Deploy notes
 
+Production is one VPS: Caddy terminates TLS and proxies to the app container. Both are started from `deploy/docker-compose.prod.yml`, and `deploy/deploy.sh` does fetch → rebuild → restart → `/healthz` check.
+
+The server has no git, so the script pulls the `main` tarball from GitHub. It keeps `.env` and the `caddy_data` volume, and replaces everything else.
+
 ```bash
-cp .env.example .env   # set PUBLIC_BASE_URL and rate-limit values
-PORT=8001 docker compose up -d --build
+mkdir -p ~/awtik_landing && cd ~/awtik_landing
+curl -fsSL https://github.com/awt1k-dev/my_page/archive/refs/heads/main.tar.gz | tar xz --strip-components=1
+cp .env.example .env   # PUBLIC_BASE_URL, TRUST_PROXY_HEADERS=true, PORT=8001
+./deploy/deploy.sh
 ```
 
-Put Nginx/Caddy in front on `127.0.0.1:8001`, set `TRUST_PROXY_HEADERS=true`, and point `awtik.ru` at the server. The app exposes `/healthz` for checks. `cash.awtik.ru` is intentionally not linked until that demo server is online.
+Updates are the same `./deploy/deploy.sh`; it is safe to re-run.
 
-A starting Nginx config is in `deploy/nginx.conf.example`. Adjust certificate paths and the `www` redirect before using it.
+- `deploy/Caddyfile` serves `awtik.ru`, redirects `www.awtik.ru` and `www.awtik.ru` to it, and gets/renews Let's Encrypt certificates automatically (stored in the `caddy_data` volume).
+- The app is published on `127.0.0.1:${PORT:-8000}` only; Caddy reaches it at `web:8000`. Set `TRUST_PROXY_HEADERS=true`, otherwise every visitor shares the proxy IP.
+- Both containers use `json-file` logging with `10m` × 3 rotation to keep the small disk clean.
+- Caddy waits for the app healthcheck (`/healthz`) before starting.
+- `deploy/nginx.conf.example` is kept as an alternative if Caddy is ever replaced.
 
 - CSS/JS are served with `Cache-Control: no-cache` because their URLs are not fingerprinted; fonts/images keep a long cache.
 - The container runs as a non-root user.
