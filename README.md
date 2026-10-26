@@ -70,7 +70,7 @@ cp .env.example .env   # PUBLIC_BASE_URL, TRUST_PROXY_HEADERS=true, PORT=8001
 
 Updates are the same `./deploy/deploy.sh`; it is safe to re-run.
 
-- `deploy/Caddyfile` serves `awtik.ru`, redirects `www.awtik.ru` and `www.awtik.ru` to it, and gets/renews Let's Encrypt certificates automatically (stored in the `caddy_data` volume).
+- `deploy/Caddyfile` serves `awtik.ru`, redirects `www.awtik.ru` to it, and gets/renews Let's Encrypt certificates automatically (stored in the `caddy_data` volume).
 - The app is published on `127.0.0.1:${PORT:-8000}` only; Caddy reaches it at `web:8000`. Set `TRUST_PROXY_HEADERS=true`, otherwise every visitor shares the proxy IP.
 - Both containers use `json-file` logging with `10m` × 3 rotation to keep the small disk clean.
 - Caddy waits for the app healthcheck (`/healthz`) before starting.
