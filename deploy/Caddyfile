@@ -22,3 +22,11 @@ awtik.ru {
 
 	reverse_proxy web:8000
 }
+
+# Live honeypot feed, served by the separate awtik_radar compose project.
+# Both services share the external awtik_net network.
+radar.awtik.ru {
+	encode zstd gzip
+	header Strict-Transport-Security "max-age=31536000"
+	reverse_proxy radar:8000
+}

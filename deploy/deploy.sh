@@ -66,6 +66,10 @@ fi
 echo "==> Stopping containers"
 "${COMPOSE[@]}" down --remove-orphans || true
 
+# Shared with the awtik_radar project. `down` above leaves external networks
+# alone, so this is a no-op after the first deploy.
+docker network create awtik_net >/dev/null 2>&1 || true
+
 echo "==> Replacing sources (keeping .env)"
 find . -mindepth 1 -maxdepth 1 ! -name .env -exec rm -rf {} +
 cp -a "$src/." .

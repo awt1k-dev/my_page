@@ -22,6 +22,9 @@ services:
       - "80:80"
       - "443:443"
       - "443:443/udp"
+    networks:
+      - default
+      - awtik_net
     volumes:
       - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy_data:/data
@@ -34,6 +37,11 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
+
+networks:
+  # Shared with the awtik_radar project; created once by deploy.sh.
+  awtik_net:
+    external: true
 
 volumes:
   caddy_data:
